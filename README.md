@@ -200,3 +200,4 @@ To run this bot we recommend you a cloud instance with a minimum of:
 - [TA-Lib](https://mrjbq7.github.io/ta-lib/install.html)
 - [virtualenv](https://virtualenv.pypa.io/en/stable/installation/) (Recommended)
 - [Docker](https://www.docker.com/products/docker) (Recommended)
+# crypto-trade-strategy
