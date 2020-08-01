@@ -50,6 +50,7 @@ freqtrade/rpc/rpc.py
 freqtrade/rpc/rpc_manager.py
 freqtrade/rpc/telegram.py
 freqtrade/rpc/webhook.py
+freqtrade/strategy/EMAMA.py
 freqtrade/strategy/__init__.py
 freqtrade/strategy/bbrsi.py
 freqtrade/strategy/default_strategy.py
