@@ -13,7 +13,7 @@ from freqtrade.optimize.hyperopt_interface import IHyperOpt
 class_name = 'DefaultHyperOpts'
 
 
-class BBRSIOPT(IHyperOpt):
+class bbrsiopt(IHyperOpt):
     """
     Default hyperopt provided by freqtrade bot.
     You can override it with your own hyperopt
@@ -46,6 +46,7 @@ class BBRSIOPT(IHyperOpt):
         dataframe['bb_middleband4'] = bollinger4['mid']
         dataframe['bb_upperband4'] = bollinger4['upper']
 
+
         return dataframe
 
     @staticmethod
@@ -59,6 +60,7 @@ class BBRSIOPT(IHyperOpt):
             """
             conditions = []
             # GUARDS AND TRENDS
+
             if 'rsi-enabled' in params and params['rsi-enabled']:
                 conditions.append(dataframe['rsi'] > params['rsi-value'])
 
@@ -73,12 +75,9 @@ class BBRSIOPT(IHyperOpt):
                 if params['trigger'] == 'bb_lower4':
                     conditions.append(dataframe['close'] < dataframe['bb_lowerband4'])
 
-            if not conditions:
-                pass
-            else:
-                dataframe.loc[
-                    reduce(lambda x, y: x & y, conditions),
-                    'buy'] = 1
+            dataframe.loc[
+                reduce(lambda x, y: x & y, conditions),
+                'buy'] = 1
 
             return dataframe
 
@@ -108,7 +107,7 @@ class BBRSIOPT(IHyperOpt):
             conditions = []
             # GUARDS AND TRENDS
             if 'sell-rsi-enabled' in params and params['sell-rsi-enabled']:
-                conditions.append(dataframe['sell-rsi'] > params['sell-rsi-value'])
+                conditions.append(dataframe['rsi'] > params['sell-rsi-value'])
 
             # TRIGGERS
             if 'sell-trigger' in params:
@@ -119,12 +118,10 @@ class BBRSIOPT(IHyperOpt):
                 if params['sell-trigger'] == 'sell-bb_upper1':
                     conditions.append(dataframe['close'] > dataframe['bb_upperband1'])
 
-            if not conditions:
-                pass
-            else:
-                dataframe.loc[
-                    reduce(lambda x, y: x & y, conditions),
-                    'sell'] = 1
+
+            dataframe.loc[
+                reduce(lambda x, y: x & y, conditions),
+                'sell'] = 1
 
             return dataframe
 
@@ -171,12 +168,12 @@ class BBRSIOPT(IHyperOpt):
         Values to search for each ROI steps
         """
         return [
-             Integer(10, 120, name='roi_t1'),
-             Integer(10, 60, name='roi_t2'),
-             Integer(10, 40, name='roi_t3'),
-             Real(0.01, 0.04, name='roi_p1'),
-             Real(0.01, 0.07, name='roi_p2'),
-             Real(0.01, 0.20, name='roi_p3'),
+            Integer(10, 120, name='roi_t1'),
+            Integer(10, 60, name='roi_t2'),
+            Integer(10, 40, name='roi_t3'),
+            Real(0.01, 0.04, name='roi_p1'),
+            Real(0.01, 0.07, name='roi_p2'),
+            Real(0.01, 0.20, name='roi_p3'),
         ]
 
     def populate_buy_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
@@ -188,9 +185,10 @@ class BBRSIOPT(IHyperOpt):
         dataframe.loc[
             (
                 (dataframe['rsi'] > 30) &
-                (dataframe["close"] < dataframe['bb_lowerband'] )
+                (dataframe["close"] < dataframe['bb_lowerband'])
             ),
             'buy'] = 1
+
 
         return dataframe
 
@@ -201,9 +199,10 @@ class BBRSIOPT(IHyperOpt):
         Only used when --spaces does not include sell
         """
         dataframe.loc[
-            (
 
-                (dataframe["close"] > dataframe['bb_middleband'] )
+            (
+                (dataframe['close'] > dataframe['bb_middleband'] )
             ),
             'sell'] = 1
+
         return dataframe

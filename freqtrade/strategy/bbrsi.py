@@ -16,10 +16,6 @@ class bbrsi(IStrategy):
 
     # Minimal ROI designed for the strategy
     minimal_roi = {
-        "40": 0.0,
-        "30": 0.01,
-        "20": 0.02,
-        "0": 0.04
     }
 
     # Optimal stoploss designed for the strategy
